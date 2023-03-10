@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Karnaugh map solver</title>
+
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+		<link rel="stylesheet" type="text/css" href="style.css">
+    	<script src="index.js"></script>
+	</head>
+	<body class="bg-light">
+		<center><p class="display-6">Karnaugh map solver</p></center>
+
+		<div class="container">
+			
+			<div class="row">
+				<div class="col">
+					<div id="number-of-inputs-card" class="card">
+						<div class="card-body">
+							<h5 class="card-title border-bottom">Settings</h5>
+
+							<div class="container">
+								<div class="col">Number of inputs</div>
+								<div class="col">
+									<div id="number-of-inputs" class="btn-group" role="group">
+										<input type="radio" id="number-of-inputs-2" class="btn-check" name="numberOfInputs" onclick="setNumberOfInputs(2); update();"/>
+										<label for="number-of-inputs-2" class="btn btn-outline-secondary btn-sm">2</label>
+										<input type="radio" id="number-of-inputs-3" class="btn-check" name="numberOfInputs" onclick="setNumberOfInputs(3); update();"/>
+										<label for="number-of-inputs-3" class="btn btn-outline-secondary btn-sm">3</label>
+										<input type="radio" id="number-of-inputs-4" class="btn-check" name="numberOfInputs" onclick="setNumberOfInputs(4); update();"/>
+										<label for="number-of-inputs-4" class="btn btn-outline-secondary btn-sm">4</label>
+										<input type="radio" id="number-of-inputs-5" class="btn-check" name="numberOfInputs" onclick="setNumberOfInputs(5); update();"/>
+										<label for="number-of-inputs-5" class="btn btn-outline-secondary btn-sm">5</label>
+										<input type="radio" id="number-of-inputs-6" class="btn-check" name="numberOfInputs" onclick="setNumberOfInputs(6); update();"/>
+										<label for="number-of-inputs-6" class="btn btn-outline-secondary btn-sm">6</label>
+										<input type="radio" id="number-of-inputs-7" class="btn-check" name="numberOfInputs" onclick="setNumberOfInputs(7); update();"/>
+										<label for="number-of-inputs-7" class="btn btn-outline-secondary btn-sm">7</label>
+										<input type="radio" id="number-of-inputs-8" class="btn-check" name="numberOfInputs" onclick="setNumberOfInputs(8); update();"/>
+										<label for="number-of-inputs-8" class="btn btn-outline-secondary btn-sm">8</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="container">
+								<div class="col">Handle don't care</div>
+								<div class="col">
+									<div id="handle-dontcare" class="btn-group" role="group">
+										<input type="radio" id="handle-dontcare-yes" class="btn-check" name="handleDontCare" onclick="setHandleDontCare(true); update();"/>
+										<label for="handle-dontcare-yes" class="btn btn-outline-secondary btn-sm">yes</label>
+										<input type="radio" id="handle-dontcare-no" class="btn-check" name="handleDontCare" onclick="setHandleDontCare(false); update();"/>
+										<label for="handle-dontcare-no" class="btn btn-outline-secondary btn-sm">no</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="container">
+								<div class="col">Display style</div>
+								<div class="col">
+									<div id="display-style" class="btn-group" role="group">
+										<input type="radio" id="display-style-1" class="btn-check" name="displayStyle" onclick="setDisplayStyle(1); update();"/>
+										<label for="display-style-1" class="btn btn-outline-secondary btn-sm">1&nbsp;x</label>
+										<input type="radio" id="display-style-2" class="btn-check" name="displayStyle" onclick="setDisplayStyle(2); update();"/>
+										<label for="display-style-2" class="btn btn-outline-secondary btn-sm">10x</label>
+										<input type="radio" id="display-style-3" class="btn-check" name="displayStyle" onclick="setDisplayStyle(3); update();"/>
+										<label for="display-style-3" class="btn btn-outline-secondary btn-sm">10&nbsp;</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="container">
+								<div class="col">Show output indices in map</div>
+								<div class="col">
+									<div class="btn-group" role="group">
+										<input type="radio" id="map-showindices-yes" class="btn-check" name="mapShowIndices" onclick="setMapShowIndices(true); update();"/>
+										<label for="map-showindices-yes" class="btn btn-outline-secondary btn-sm">yes</label>
+										<input type="radio" id="map-showindices-no" class="btn-check" name="mapShowIndices" onclick="setMapShowIndices(false); update();"/>
+										<label for="map-showindices-no" class="btn btn-outline-secondary btn-sm">no</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col">
+					<div id="truth-table-card" class="card">
+						<div class="card-body">
+							<h5 class="card-title border-bottom">Truth table</h5>
+
+							<table id="truth-table" class="table table-sm"></table>
+						</div>
+					</div>
+				</div>
+
+				<div class="col">
+					<div id="map-card" class="card">
+						<div class="card-body">
+							<h5 class="card-title border-bottom">Map</h5>
+
+							<table id="map-table" class="table table-sm"></table>
+						</div>
+					</div>
+				</div>
+
+				<div class="col">
+					<div id="map-card" class="card">
+						<div class="card-body">
+							<h5 class="card-title border-bottom">Groups</h5>
+
+							<table id="groups-table" class="table table-sm"></table>
+						</div>
+					</div>
+				</div>
+
+				<div class="col">
+					<div id="map-card" class="card">
+						<div class="card-body">
+							<h5 class="card-title border-bottom">Formula</h5>
+
+							Y=<span id="formula"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</body>
+</html>
