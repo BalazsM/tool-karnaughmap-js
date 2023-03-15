@@ -14,6 +14,8 @@
 	<body class="bg-light">
 		<p class="text-center display-6 m-2">Karnaugh map solver</p>
 
+		<p class="text-center"><a href="https://github.com/BalazsM/sandbox-karnaughmap-js">source code</a></p>
+
 		<div class="container">
 			
 			<div class="row">
@@ -71,6 +73,18 @@
 							</div>
 
 							<div class="container">
+								<div class="col">Show truth table</div>
+								<div class="col">
+									<div class="btn-group" role="group">
+										<input type="radio" id="map-showtruthtable-yes" class="btn-check" name="mapShowTruthTable" onclick="setTruthTableShow(true);"/>
+										<label for="map-showtruthtable-yes" class="btn btn-outline-secondary btn-sm">yes</label>
+										<input type="radio" id="map-showtruthtable-no" class="btn-check" name="mapShowTruthTable" onclick="setTruthTableShow(false);"/>
+										<label for="map-showtruthtable-no" class="btn btn-outline-secondary btn-sm">no</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="container">
 								<div class="col">Show output indices in map</div>
 								<div class="col">
 									<div class="btn-group" role="group">
@@ -85,7 +99,7 @@
 					</div>
 				</div>
 
-				<div class="col">
+				<div id="truth-table-container" class="col">
 					<div id="truth-table-card" class="card mb-2">
 						<div class="card-body">
 							<h5 class="card-title border-bottom">Truth table</h5>
@@ -115,7 +129,7 @@
 					</div>
 				</div>
 
-				<div class="col">
+				<div class="col-12">
 					<div id="map-card" class="card mb-2">
 						<div class="card-body">
 							<h5 class="card-title border-bottom">Formula</h5>
@@ -124,8 +138,8 @@
 						</div>
 					</div>
 				</div>
+				
 			</div>
-
 		</div>
 	</body>
 </html>

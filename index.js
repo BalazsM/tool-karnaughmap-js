@@ -16,7 +16,6 @@ let mapColumnFormulas;
 let groups;
 let formula;
 let handleDontCare;
-
 let mapShowIndices;
 let signTrue;
 let signFalse;
@@ -462,9 +461,17 @@ function setDisplayStyle(n) {
 	}
 }
 
+function setTruthTableShow(v) {
+	let r = document.getElementById('map-showtruthtable-' + (v ? 'yes' : 'no'));
+	r.checked = true;
+
+	let c = document.getElementById('truth-table-container');
+	c.style.display = v ? 'inline' : 'none';
+}
+
 function setMapShowIndices(v) {
 	let r = document.getElementById('map-showindices-' + (v ? 'yes' : 'no'));
-	r.checked= true;
+	r.checked = true;
 
 	mapShowIndices = v;
 }
@@ -473,6 +480,7 @@ window.onload = function () {
 	setNumberOfInputs(4);
 	setHandleDontCare(true);
 	setDisplayStyle(1);
+	setTruthTableShow(true);
 	setMapShowIndices(true);
 
 	outputs[4] = true;
@@ -482,4 +490,3 @@ window.onload = function () {
 
 	update();
 }
- 
