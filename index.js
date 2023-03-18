@@ -1,3 +1,5 @@
+// TODO: formula class
+
 // 0000 0001 0010 0011 | 0100 0101 0110 0111 | 1000 1001 1010 1011 | 1100 1101 1110 1111
 //    0    1    2    3 |    4    5    6    7 |    8    9   10   11 |   12   13   14   15
 // 0000 0001 0011 0010 | 0110 0111 0101 0100 | 1100 1101 1111 1110 | 1010 1011 1001 1000
@@ -210,19 +212,46 @@ function updateMap() {
 				update();
 			};
 			cell.onmouseenter = function () {
-				let row = document.getElementById('truth-tr-' + outputIndex);
-				row.classList.add('table-active');
-				let cell = document.getElementById('map-td-' + outputIndex);
-				cell.classList.add('table-active');
+				highlightOutput(outputIndex, true);
 			}
 			cell.onmouseleave = function () {
-				let row = document.getElementById('truth-tr-' + outputIndex);
-				row.classList.remove('table-active');
-				let cell = document.getElementById('map-td-' + outputIndex);
-				cell.classList.remove('table-active');
+				highlightOutput(outputIndex, false);
 			}
 		}
 	}
+}
+
+function highlightOutput(index, value) {
+	let row = document.getElementById(`truth-tr-${index}`);
+	if (value)
+		row.classList.add('table-active');
+	else
+		row.classList.remove('table-active');
+	let cell = document.getElementById(`map-td-${index}`);
+	if (value)
+		cell.classList.add('table-active');
+	else
+		cell.classList.remove('table-active');
+}
+
+function highlightGroup(index, value) {
+	let row = document.getElementById(`groups-tr-${index}`);
+	if (value)
+		row.classList.add('table-active');
+	else
+		row.classList.remove('table-active');
+
+	for (let i = 0; i < groups[index].outputs.length; i++) {
+		let outputIndex = groups[index].outputs[i];
+		highlightOutput(outputIndex, value);
+	}
+
+	let span = document.getElementById(`formula-group-span-${index}`);
+	if (value)
+		span.classList.add('bg-secondary');
+	else
+		span.classList.remove('bg-secondary');
+	
 }
 
 function getGroup(x, y, width, height) {
@@ -320,7 +349,12 @@ function updateGroups() {
 			let g = groups[i];
 			if (i > 0)
 				formula += '+';
+			formula += `<span class="p-1"
+				id="formula-group-span-${i}"
+				onmouseenter="highlightGroup(${i}, true)"
+				onmouseleave="highlightGroup(${i}, false)">`;
 			formula += g.formula;
+			formula += '</span>';
 		}
 	}
 
@@ -342,28 +376,12 @@ function updateGroups() {
  	for (let i = 0; i < groups.length; i++) {
  		row = document.createElement('tr');
  		groupsTableBody.appendChild(row);
-		row.id = 'groups-tr-' + i;
+		row.id = `groups-tr-${i}`;
 		row.onmouseenter = function () {
-			let row = document.getElementById('groups-tr-' + i);
-			row.classList.add('table-active');
-			for (let j = 0; j < groups[i].outputs.length; j++) {
-				let outputIndex = groups[i].outputs[j];
-				let row = document.getElementById('truth-tr-' + outputIndex);
-				row.classList.add('table-active');
-				let cell = document.getElementById('map-td-' + outputIndex);
-				cell.classList.add('table-active');
-			}
+			highlightGroup(i, true);
 		}
 		row.onmouseleave = function () {
-			let row = document.getElementById('groups-tr-' + i);
-			row.classList.remove('table-active');
-			for (let j = 0; j < groups[i].outputs.length; j++) {
-				let outputIndex = groups[i].outputs[j];
-				let row = document.getElementById('truth-tr-' + outputIndex);
-				row.classList.remove('table-active');
-				let cell = document.getElementById('map-td-' + outputIndex);
-				cell.classList.remove('table-active');
-			}
+			highlightGroup(i, false);
 		}
 
  		cell = document.createElement('th');
@@ -487,6 +505,11 @@ window.onload = function () {
 	outputs[5] = true;
 	outputs[6] = true;
 	outputs[7] = true;
+
+	outputs[3] = true;
+	outputs[7] = true;
+	outputs[11] = true;
+	outputs[15] = true;
 
 	update();
 }
